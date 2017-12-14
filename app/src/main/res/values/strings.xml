@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">ToDoList</string>
+    <string name="priority">Priority</string>
+    <string name="high">High</string>
+    <string name="medium">Medium</string>
+    <string name="low">Low</string>
+    <string name="heading">Add new task here...\nSpecify their priorities also...</string>
+    <string name="add">Add Task</string>
 </resources>
