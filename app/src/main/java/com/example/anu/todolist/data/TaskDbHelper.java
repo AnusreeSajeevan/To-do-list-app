@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class TaskDbHelper extends SQLiteOpenHelper {
 
     private static String KEY_DATABASE_NAME = "tasks.db";
-    private static int KEY_DATABASE_VERSION = 1;
+    private static int KEY_DATABASE_VERSION = 2;
 
     public TaskDbHelper(Context context) {
         super(context, KEY_DATABASE_NAME, null, KEY_DATABASE_VERSION);
@@ -34,5 +34,6 @@ public class TaskDbHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TaskContract.TaskEntry.TABLE_NAME);
+        onCreate(sqLiteDatabase);
     }
 }

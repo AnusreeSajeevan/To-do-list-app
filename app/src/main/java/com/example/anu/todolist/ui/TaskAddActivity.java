@@ -90,7 +90,7 @@ public class TaskAddActivity extends AppCompatActivity implements com.mobsandgee
         contentValues.put(TaskContract.TaskEntry.KEY_COLUMN_PRIORITY, priority);
         Uri uri = getContentResolver().insert(TaskContract.TaskEntry.CONTENT_URI, contentValues);
         if (null != uri){
-            Toast.makeText(this, uri.toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Task added", Toast.LENGTH_SHORT).show();
         }
         finish();
     }

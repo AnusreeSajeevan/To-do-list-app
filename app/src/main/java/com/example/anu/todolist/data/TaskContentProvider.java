@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 /**
  * Created by Design on 14-12-2017.
@@ -47,7 +48,7 @@ public class TaskContentProvider extends ContentProvider {
          * add match for each of the uri that we want to access
          */
         uriMatcher.addURI(TaskContract.AUTHORITY, TaskContract.PATH_TASKS, TASKS);  //for the entire directory
-        uriMatcher.addURI(TaskContract.AUTHORITY, TaskContract.PATH_TASKS, TASKS);  //for single item in the directory
+        uriMatcher.addURI(TaskContract.AUTHORITY, TaskContract.PATH_TASKS + "/#", TASKS_WITH_ID);  //for single item in the directory
 
         return uriMatcher;
     }
@@ -71,17 +72,11 @@ public class TaskContentProvider extends ContentProvider {
         Cursor returnCursor;
         SQLiteDatabase sqLiteDatabase = mTaskDbHelper.getReadableDatabase();
         int uriMatch = sUriMatcher.match(uri);
+        Log.d("checkkkuri", "uri : "+uri);
         switch (uriMatch){
             case TASKS:
                 returnCursor = sqLiteDatabase.query(TaskContract.TaskEntry.TABLE_NAME,
                         projection, selection, selecionArgs, null, null, sortOrder);
-                break;
-                case TASKS_WITH_ID:
-                    String id = uri.getPathSegments().get(1);
-                    String mSelection = "_id=?";
-                    String[] mSelectionArgs = new String[]{id};
-                 returnCursor = sqLiteDatabase.query(TaskContract.TaskEntry.TABLE_NAME,
-                        projection, mSelection, mSelectionArgs, null, null, sortOrder);
                 break;
                 default:
                     throw new UnsupportedOperationException("unknown uri");
@@ -130,7 +125,22 @@ public class TaskContentProvider extends ContentProvider {
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String s, @Nullable String[] strings) {
-        return 0;
+        int deleted;
+        SQLiteDatabase sqLiteDatabase = mTaskDbHelper.getWritableDatabase();
+        int uriMatch = sUriMatcher.match(uri);
+        switch (uriMatch){
+            case TASKS_WITH_ID:
+                String selection = "_id=?";
+                String[] selectionArgs = new String[]{uri.getPathSegments().get(1)};
+                deleted = sqLiteDatabase.delete(TaskContract.TaskEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+                default:
+                    throw new UnsupportedOperationException("Unknown uri");
+        }
+        if (deleted>0){
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return deleted;
     }
 
     @Override

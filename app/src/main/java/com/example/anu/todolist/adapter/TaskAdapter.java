@@ -48,6 +48,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskHolder> {
         GradientDrawable priorityBackground = (GradientDrawable) holder.txtTaskPriority.getBackground();
         priorityBackground.setColor(priorityColor);
         holder.txtTaskPriority.setText(String.valueOf(priority));
+        holder.itemView.setTag(mCursor.getInt(mCursor.getColumnIndex(TaskContract.TaskEntry._ID)));
     }
 
     private int getPriorityColor(int priority) {
@@ -70,7 +71,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskHolder> {
 
     @Override
     public int getItemCount() {
-        if(mCursor.getCount() == 0)
+        if(null == mCursor)
             return 0;
           else
               return mCursor.getCount();

@@ -2,6 +2,7 @@ package com.example.anu.todolist.ui;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.LoaderManager;
@@ -10,7 +11,9 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Window;
+import android.widget.Toast;
 
 import com.example.anu.todolist.R;
 import com.example.anu.todolist.adapter.TaskAdapter;
@@ -36,7 +39,24 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         ButterKnife.bind(this);
         setupRecuclerView();
 
-        getSupportLoaderManager().initLoader(TASK_LOADER_ID, bundle, MainActivity.this);
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                Uri uri = TaskContract.TaskEntry.CONTENT_URI.buildUpon().appendPath(String.valueOf(viewHolder.itemView.getTag())).build();
+                int deleted = getContentResolver().delete(uri, null, null);
+                if (deleted>0){
+                    Toast.makeText(MainActivity.this, "Task deleted", Toast.LENGTH_SHORT).show();
+                    getSupportLoaderManager().restartLoader(TASK_LOADER_ID, bundle, MainActivity.this);
+                }
+            }
+        }).attachToRecyclerView(recycleriewTasks);
+
+                getSupportLoaderManager().initLoader(TASK_LOADER_ID, bundle, MainActivity.this);
     }
 
     /**
