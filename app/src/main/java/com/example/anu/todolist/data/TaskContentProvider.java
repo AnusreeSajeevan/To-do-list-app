@@ -76,6 +76,13 @@ public class TaskContentProvider extends ContentProvider {
                 returnCursor = sqLiteDatabase.query(TaskContract.TaskEntry.TABLE_NAME,
                         projection, selection, selecionArgs, null, null, sortOrder);
                 break;
+                case TASKS_WITH_ID:
+                    String id = uri.getPathSegments().get(1);
+                    String mSelection = "_id=?";
+                    String[] mSelectionArgs = new String[]{id};
+                 returnCursor = sqLiteDatabase.query(TaskContract.TaskEntry.TABLE_NAME,
+                        projection, mSelection, mSelectionArgs, null, null, sortOrder);
+                break;
                 default:
                     throw new UnsupportedOperationException("unknown uri");
         }
