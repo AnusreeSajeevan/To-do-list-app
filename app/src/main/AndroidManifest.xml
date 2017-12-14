@@ -21,6 +21,14 @@
             <meta-data android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity"/>
         </activity>
-    </application>
 
+        <!--Register content providr so that app knows the provider exists-->
+        <!-- exported = false limits access to this ContentProvider to only this app -->
+        <!-- name = name of the content provider with full package name -->
+        <!-- authorities = name of the package -->
+        <provider
+            android:authorities="com.example.anu.todolist"
+            android:name="com.example.anu.todolist.data.TaskContentProvider"
+            android:exported="false"/>
+    </application>
 </manifest>
