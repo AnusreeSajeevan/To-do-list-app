@@ -34,7 +34,7 @@ public class TaskContentProvider extends ContentProvider {
      * method to create UriMatcher
      * @return created UriMatcher
      */
-    private static UriMatcher buildUriMatcher() {
+    public static UriMatcher buildUriMatcher() {
         /**
          * deefine a uri matcher with no match by passing UriMatcher.NO_MATCH to the constructor
          */
