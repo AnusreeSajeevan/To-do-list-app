@@ -37,6 +37,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskHolder> {
 
     @Override
     public void onBindViewHolder(TaskHolder holder, int position) {
+        mCursor.moveToPosition(position);
         holder.txtTaskDescription.setText(mCursor.getString(mCursor.getColumnIndex(TaskContract.TaskEntry.KEY_COLUMN_DESCRIPTION)));
         int priority = mCursor.getInt(mCursor.getColumnIndex(TaskContract.TaskEntry.KEY_COLUMN_PRIORITY));
 
@@ -46,7 +47,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskHolder> {
         int priorityColor = getPriorityColor(priority);
         GradientDrawable priorityBackground = (GradientDrawable) holder.txtTaskPriority.getBackground();
         priorityBackground.setColor(priorityColor);
-        holder.txtTaskPriority.setText(priority);
+        holder.txtTaskPriority.setText(String.valueOf(priority));
     }
 
     private int getPriorityColor(int priority) {
@@ -69,9 +70,17 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskHolder> {
 
     @Override
     public int getItemCount() {
-        //   if(mCursor.getCount() == 0)
-        return 0;
-        //  else
-        //      return mCursor.getCount();
+        if(mCursor.getCount() == 0)
+            return 0;
+          else
+              return mCursor.getCount();
+    }
+
+    public void swapCursor(Cursor cursor){
+        if (mCursor == cursor)
+            return;
+        mCursor = cursor;
+        if (null != cursor)
+            notifyDataSetChanged();
     }
 }

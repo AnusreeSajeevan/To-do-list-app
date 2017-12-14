@@ -2,10 +2,12 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="task_height">100dp</dimen>
-    <dimen name="task_priority_size">20dp</dimen>
+    <dimen name="task_priority_size">40dp</dimen>
     <dimen name="priority_margin">2dp</dimen>
     <dimen name="margin50">50dp</dimen>
     <dimen name="margin10">10dp</dimen>
     <dimen name="margin20">20dp</dimen>
+    <dimen name="testSize20">20sp</dimen>
+    <dimen name="testSize16">16sp</dimen>
     <dimen name="task_name_right_margin">30dp</dimen>
 </resources>

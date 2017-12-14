@@ -66,8 +66,24 @@ public class TaskContentProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public Cursor query(@NonNull Uri uri, @Nullable String[] strings, @Nullable String s, @Nullable String[] strings1, @Nullable String s1) {
-        return null;
+    public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selecionArgs,
+                        @Nullable String sortOrder) {
+        Cursor returnCursor;
+        SQLiteDatabase sqLiteDatabase = mTaskDbHelper.getReadableDatabase();
+        int uriMatch = sUriMatcher.match(uri);
+        switch (uriMatch){
+            case TASKS:
+                returnCursor = sqLiteDatabase.query(TaskContract.TaskEntry.TABLE_NAME,
+                        projection, selection, selecionArgs, null, null, sortOrder);
+                break;
+                default:
+                    throw new UnsupportedOperationException("unknown uri");
+        }
+
+        //set notification uri on th cursor
+        returnCursor.setNotificationUri(getContext().getContentResolver(), uri);
+
+        return returnCursor;
     }
 
     @Nullable
@@ -76,6 +92,12 @@ public class TaskContentProvider extends ContentProvider {
         return null;
     }
 
+    /**
+     * method to insert task into the database
+     * @param uri
+     * @param contentValues
+     * @return
+     */
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {

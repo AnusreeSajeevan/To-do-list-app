@@ -6,8 +6,8 @@ package com.example.anu.todolist.utils;
 
 public class TaskUtils {
 
-    public static final String PRIORITY_HIGH = "high";
-    public static final String PRIORITY_MEDIUM = "medium";
-    public static final String PRIORITY_LOW = "low";
+    public static final int PRIORITY_HIGH = 1;
+    public static final int PRIORITY_MEDIUM = 2;
+    public static final int PRIORITY_LOW = 3;
 
 }

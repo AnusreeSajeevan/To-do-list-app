@@ -35,7 +35,7 @@ public class TaskAddActivity extends AppCompatActivity implements com.mobsandgee
     @BindView(R.id.radio_group)
     RadioGroup radioGroup;
 
-    private String priority = TaskUtils.PRIORITY_HIGH;
+    private int priority = TaskUtils.PRIORITY_HIGH;
     private Validator validator;
 
     @Override

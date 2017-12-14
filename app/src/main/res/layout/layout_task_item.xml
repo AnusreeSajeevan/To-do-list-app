@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="@dimen/task_height"
-    android:padding="@dimen/margin10">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:elevation="2dp"
+    android:layout_margin="@dimen/margin10">
+<RelativeLayout
+    android:padding="@dimen/margin10"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <TextView
+        android:inputType="textCapSentences"
+        android:textColor="@color/black"
+        android:textSize="@dimen/testSize16"
+        android:layout_centerVertical="true"
         android:id="@+id/txt_task_description"
         android:layout_marginRight="@dimen/task_name_right_margin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <TextView
+        android:textColor="@color/black"
+        android:gravity="center_vertical"
+        android:textAlignment="center"
         android:id="@+id/txt_task_priority"
         android:background="@drawable/circle_priority"
         android:layout_centerVertical="true"
@@ -17,3 +30,4 @@
         android:layout_width="@dimen/task_priority_size"
         android:layout_height="@dimen/task_priority_size" />
 </RelativeLayout>
+</android.support.v7.widget.CardView>
