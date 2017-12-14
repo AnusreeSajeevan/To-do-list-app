@@ -95,6 +95,7 @@ public class TaskContentProvider extends ContentProvider {
                 default:
                     throw new UnsupportedOperationException("unknown uri : "+uri);
         }
+        getContext().getContentResolver().notifyChange(uri, null);
         return returnUri;
     }
 
