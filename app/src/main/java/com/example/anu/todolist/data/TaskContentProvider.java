@@ -1,9 +1,12 @@
 package com.example.anu.todolist.data;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -76,7 +79,23 @@ public class TaskContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
-        return null;
+        Uri returnUri;
+        SQLiteDatabase sqLiteDatabase = mTaskDbHelper.getWritableDatabase();
+        //identify the uri match
+        int uriMatch = sUriMatcher.match(uri);
+        switch (uriMatch){
+            case TASKS:
+                long id = sqLiteDatabase.insert(TaskContract.TaskEntry.TABLE_NAME, null, contentValues);
+                if (id>0){
+                    returnUri = ContentUris.withAppendedId(TaskContract.TaskEntry.CONTENT_URI, id);
+                }else {
+                    throw new SQLiteException("Cannot insert task");
+                }
+                break;
+                default:
+                    throw new UnsupportedOperationException("unknown uri : "+uri);
+        }
+        return returnUri;
     }
 
     @Override

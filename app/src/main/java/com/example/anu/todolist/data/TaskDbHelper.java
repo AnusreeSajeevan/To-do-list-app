@@ -24,9 +24,9 @@ public class TaskDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String QUERY_CREATE_TTASK_TABLE = "CREATE TABLE " + TaskContract.TaskEntry.TABLE_NAME + " (" +
-                TaskContract.TaskEntry.KEY_COLUMN_DESCRIPTION + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                TaskContract.TaskEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 TaskContract.TaskEntry.KEY_COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
-                TaskContract.TaskEntry.KEY_COLUMN_PRIORITY + " INTEGER NOT NULL, " +
+                TaskContract.TaskEntry.KEY_COLUMN_PRIORITY + " INTEGER NOT NULL" +
                 ");";
         sqLiteDatabase.execSQL(QUERY_CREATE_TTASK_TABLE);
     }

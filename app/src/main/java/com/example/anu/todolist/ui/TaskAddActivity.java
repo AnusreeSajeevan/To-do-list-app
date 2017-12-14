@@ -1,5 +1,7 @@
 package com.example.anu.todolist.ui;
 
+import android.content.ContentValues;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -9,16 +11,21 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.anu.todolist.R;
+import com.example.anu.todolist.data.TaskContract;
 import com.example.anu.todolist.utils.TaskUtils;
+import com.mobsandgeeks.saripaar.Rule;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.Required;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class TaskAddActivity extends AppCompatActivity {
+public class TaskAddActivity extends AppCompatActivity implements com.mobsandgeeks.saripaar.Validator.ValidationListener{
 
-    @BindView(R.id.txt_task_description)
-    EditText txtTaskDescription;
+    @Required(order = 1, message = "Enter task descrition")
+    @BindView(R.id.et_task_description)
+    EditText etTaskDescription;
     @BindView(R.id.rg_high)
     RadioButton rgHigh;
     @BindView(R.id.rg_medium)
@@ -29,6 +36,7 @@ public class TaskAddActivity extends AppCompatActivity {
     RadioGroup radioGroup;
 
     private String priority = TaskUtils.PRIORITY_HIGH;
+    private Validator validator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +46,9 @@ public class TaskAddActivity extends AppCompatActivity {
 
         //set prority high by default
         radioGroup.check(R.id.rg_high);
+
+        validator = new Validator(this);
+        validator.setValidationListener(this);
     }
 
     /**
@@ -65,6 +76,30 @@ public class TaskAddActivity extends AppCompatActivity {
      */
     @OnClick(R.id.btn_add)
     public void onAddClicked() {
-        Toast.makeText(this, priority, Toast.LENGTH_SHORT).show();
+        validator.validate();
+    }
+
+    @Override
+    public void onValidationSucceeded() {
+        addTask();
+    }
+
+    private void addTask() {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TaskContract.TaskEntry.KEY_COLUMN_DESCRIPTION, etTaskDescription.getText().toString());
+        contentValues.put(TaskContract.TaskEntry.KEY_COLUMN_PRIORITY, priority);
+        Uri uri = getContentResolver().insert(TaskContract.TaskEntry.CONTENT_URI, contentValues);
+        if (null != uri){
+            Toast.makeText(this, uri.toString(), Toast.LENGTH_SHORT).show();
+        }
+        finish();
+    }
+
+    @Override
+    public void onValidationFailed(View failedView, Rule<?> failedRule) {
+        if (failedView instanceof EditText){
+            EditText editText = (EditText) failedView;
+            editText.setError(failedRule.getFailureMessage());
+        }
     }
 }
